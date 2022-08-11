@@ -13,6 +13,7 @@ notes = {
     'D4'  : 293.66,
     'D#4' : 311.13,
     'Eb4' : 311.13,
+    'E4'  : 329.63,
     'F4'  : 349.23,
     'Gb4' : 369.99,
     'F#4' : 369.99,
@@ -141,31 +142,25 @@ def play_midi():
     while i < len(midi_list):
         start1, end1, pitch1, velocity1, instrument1 = midi_list[i]
 
-        # look ahead by one
-        j = 1
-        while i+j < len(midi_list):
-            start2, end2, pitch2, velocity2, instrument2 = midi_list[i+j]
-            if end1 == start2 and pitch1 == pitch2:
-                # add the note
-                processed_notes.append((pitch_to_notes[pitch1], end2-start1))
-                i = i+j + 1
-                break
-
-            else:
-                break
-
-        # detect if there's silence
+        # look ahead, process duplicates
         if i+1 < len(midi_list):
             start2, end2, pitch2, velocity2, instrument2 = midi_list[i+1]
-            if start2 - end1 > 0:
-                processed_notes.append(('silence', start2-end1))
-                i = i + 1
+            if end1 == start2 and pitch1 == pitch2:
+                processed_notes.append((pitch_to_notes[pitch1], end2-start1))
+                i = i + 2
                 continue
 
-        # otherwise, just play the note
+        # add this note
         processed_notes.append((pitch_to_notes[pitch1], end1-start1))
+
+        # detect silence between notes
+        if i+1 < len(midi_list):
+            start2, end2, pitch2, velocity2, instrument2 = midi_list[i+1]
+            if start2 > end1:
+                processed_notes.append(('silence', start2-end1))
+
+        # move onto the next note
         i = i + 1
-             
 
         
 
