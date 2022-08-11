@@ -135,14 +135,41 @@ def play_midi():
     # account for pauses, and aggregate duplicate notes
     # compare each note with the next. disregard velocity and instrument
     processed_notes = []   # format: (note, duration)
-    for ((s1,e1,p1,_,_), (s2,e2,p2,_,_)) in zip(midi_list, midi_list[1:]):
-        # detect silence
-        if s2 - e1 > 0:
-            processed_notes.append(['silence', s2-e1])
 
-        # detect duplicate notes (assumption: no more than 2)
-        if p1 == p2 and e1==s2:
-            processed_notes.append((pitch_to_notes[p1], e2-s1))
+    # just sequentially process by checking the difference between notes
+    i = 0
+    while i < len(midi_list):
+        start1, end1, pitch1, velocity1, instrument1 = midi_list[i]
+
+        # look ahead by one
+        j = 1
+        while i+j < len(midi_list):
+            start2, end2, pitch2, velocity2, instrument2 = midi_list[i+j]
+            if end1 == start2 and pitch1 == pitch2:
+                # add the note
+                processed_notes.append((pitch_to_notes[pitch1], end2-start1))
+                i = i+j + 1
+                break
+
+            else:
+                break
+
+        # detect if there's silence
+        if i+1 < len(midi_list):
+            start2, end2, pitch2, velocity2, instrument2 = midi_list[i+1]
+            if start2 - end1 > 0:
+                processed_notes.append(('silence', start2-end1))
+                i = i + 1
+                continue
+
+        # otherwise, just play the note
+        processed_notes.append((pitch_to_notes[pitch1], end1-start1))
+        i = i + 1
+             
+
+        
+
+
 
     for (note, duration) in processed_notes:
         playsound(notes[note], duration)
