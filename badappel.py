@@ -6,6 +6,7 @@ def playsound(freq, duration):
     
 # https://pages.mtu.edu/~suits/notefreqs.html
 notes = {
+    'silence' : 0,
     'C4'  : 261.63,
     'C#4' : 277.18,
     'Db4' : 277.18,
@@ -122,13 +123,28 @@ def play_midi():
     midi_list = sorted(midi_list, key=lambda x: (x[0]))
 
     # play only the upper notes (melody)
-    midi_list = filter(lambda x: x[2] >= 72-12, midi_list) # C5
+    midi_list = list(filter(lambda x: x[2] >= 72-12, midi_list)) # C5
     # maybe our midi doesn't conform to the spec? (there aren't enough pitches >=72, but the sequencer shows the melody all above C5)
 
     # just play in order for the duration
-    for (start, end, pitch, velocity, instrument) in midi_list:
-        duration = end-start
-        note = pitch_to_notes[pitch]
+    #for (start, end, pitch, velocity, instrument) in midi_list:
+    #    duration = end-start
+    #    note = pitch_to_notes[pitch]
+    #    playsound(notes[note], duration)
+
+    # account for pauses, and aggregate duplicate notes
+    # compare each note with the next. disregard velocity and instrument
+    processed_notes = []   # format: (note, duration)
+    for ((s1,e1,p1,_,_), (s2,e2,p2,_,_)) in zip(midi_list, midi_list[1:]):
+        # detect silence
+        if s2 - e1 > 0:
+            processed_notes.append(['silence', s2-e1])
+
+        # detect duplicate notes (assumption: no more than 2)
+        if p1 == p2 and e1==s2:
+            processed_notes.append((pitch_to_notes[p1], e2-s1))
+
+    for (note, duration) in processed_notes:
         playsound(notes[note], duration)
 
 
