@@ -39,7 +39,7 @@ for note in set(notes.keys()): # prevent changing size during iteration
 
 
 
-
+# https://onlinesequencer.net/1933089
 def play():
     #playsound(notes['A4'], 0.1)
     #playsound(notes['B4'], 0.1)
@@ -49,6 +49,29 @@ def play():
     playsound(notes['F5'], 0.2)
     playsound(notes['F#5'], 0.2)
     playsound(notes['G#5'], 0.2)
+    playsound(notes['A#5'], 0.1)
+    playsound(0, 0.2) # silence? 
+    playsound(notes['A#5'], 0.1)
+    playsound(notes['D#6'], 0.2)
+    playsound(notes['C#6'], 0.2)
+    playsound(notes['A#5'], 0.1)
+    playsound(0, 0.2)
+    playsound(notes['A#5'], 0.1)
+    playsound(notes['D#5'], 0.1)
+    playsound(0, 0.2)
+    playsound(notes['D#5'], 0.1)
+    playsound(notes['A#5'], 0.2)
+    playsound(notes['G#5'], 0.2)
+    playsound(notes['F#5'], 0.2)
+    playsound(notes['F5'] , 0.2)
+    playsound(notes['D#5'], 0.2)
+    playsound(notes['F5'] , 0.2)
+    playsound(notes['F#5'], 0.2)
+    playsound(notes['G#5'], 0.2)
+    playsound(notes['A#5'], 0.1)
+
+
+
 
 
 if __name__ == '__main__':
