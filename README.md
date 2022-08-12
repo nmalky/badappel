@@ -7,8 +7,11 @@ Musics from https://onlinesequencer.net/app/midi.php?id=1933089
 
 ## run
 `sudo apt install sox`
+
 `pip install -r requirements.txt` (just installs pretty_midi) 
+
 then
+
 `python3 badappel.py`
 
 ## future improvements
