@@ -3,7 +3,7 @@ questionable implementation of music. intended for adaptation to robot beeps
 
 Acquire `play` from `sox`
 
-Musics from https://onlinesequencer.net/app/midi.php?id=1933089
+Musics from https://onlinesequencer.net/1933089
 
 ## run
 `sudo apt install sox`
