@@ -12,5 +12,5 @@ then
 `python3 badappel.py`
 
 ## future improvements
-export the midi to a list of (frequency, duration) pairs. load and play later without the dependency on midi parsing
-make it run on a roboto power board
+* export the midi to a list of (frequency, duration) pairs. load and play later without the dependency on midi parsing
+* make it run on a roboto power board
